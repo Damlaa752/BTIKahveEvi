@@ -49,11 +49,13 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.grpbx2 = new System.Windows.Forms.GroupBox();
+            this.radVenti = new System.Windows.Forms.RadioButton();
             this.radTall = new System.Windows.Forms.RadioButton();
             this.radGrande = new System.Windows.Forms.RadioButton();
-            this.rasVenti = new System.Windows.Forms.RadioButton();
-            this.radSoya = new System.Windows.Forms.RadioButton();
+            this.grpBx1 = new System.Windows.Forms.GroupBox();
             this.radYagsiz = new System.Windows.Forms.RadioButton();
+            this.radSoya = new System.Windows.Forms.RadioButton();
             this.chc2x = new System.Windows.Forms.CheckBox();
             this.chck1x = new System.Windows.Forms.CheckBox();
             this.label11 = new System.Windows.Forms.Label();
@@ -65,15 +67,18 @@
             this.SiparisListBox = new System.Windows.Forms.ListBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.buttonSiparisVer = new System.Windows.Forms.Button();
-            this.label12 = new System.Windows.Forms.Label();
+            this.lblToplam = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label8 = new System.Windows.Forms.Label();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numHotCoffee)).BeginInit();
             this.groupBox3.SuspendLayout();
+            this.grpbx2.SuspendLayout();
+            this.grpBx1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -167,7 +172,7 @@
             this.groupBox2.Size = new System.Drawing.Size(544, 533);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Müşteri Bilgileri";
+            this.groupBox2.Text = "Ürünler";
             // 
             // buttonHesapla
             // 
@@ -177,27 +182,26 @@
             this.buttonHesapla.TabIndex = 7;
             this.buttonHesapla.Text = "Hesapla";
             this.buttonHesapla.UseVisualStyleBackColor = true;
-            this.buttonHesapla.Click += new System.EventHandler(this.buttonHesapla_Click);
             // 
             // numericUpDown3
             // 
-            this.numericUpDown3.Location = new System.Drawing.Point(468, 167);
+            this.numericUpDown3.Location = new System.Drawing.Point(453, 167);
             this.numericUpDown3.Name = "numericUpDown3";
-            this.numericUpDown3.Size = new System.Drawing.Size(41, 26);
+            this.numericUpDown3.Size = new System.Drawing.Size(56, 26);
             this.numericUpDown3.TabIndex = 6;
             // 
             // numericUpDown2
             // 
-            this.numericUpDown2.Location = new System.Drawing.Point(468, 110);
+            this.numericUpDown2.Location = new System.Drawing.Point(453, 110);
             this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(41, 26);
+            this.numericUpDown2.Size = new System.Drawing.Size(56, 26);
             this.numericUpDown2.TabIndex = 6;
             // 
             // numHotCoffee
             // 
-            this.numHotCoffee.Location = new System.Drawing.Point(468, 45);
+            this.numHotCoffee.Location = new System.Drawing.Point(453, 45);
             this.numHotCoffee.Name = "numHotCoffee";
-            this.numHotCoffee.Size = new System.Drawing.Size(41, 26);
+            this.numHotCoffee.Size = new System.Drawing.Size(56, 26);
             this.numHotCoffee.TabIndex = 6;
             // 
             // label7
@@ -212,10 +216,6 @@
             // cmbHotDrink
             // 
             this.cmbHotDrink.FormattingEnabled = true;
-            this.cmbHotDrink.Items.AddRange(new object[] {
-            "Çay ",
-            "Hot Chocolate ",
-            "Chai Tea Latte"});
             this.cmbHotDrink.Location = new System.Drawing.Point(218, 166);
             this.cmbHotDrink.Name = "cmbHotDrink";
             this.cmbHotDrink.Size = new System.Drawing.Size(217, 28);
@@ -236,6 +236,7 @@
             this.cmbHotCoffee.Name = "cmbHotCoffee";
             this.cmbHotCoffee.Size = new System.Drawing.Size(217, 28);
             this.cmbHotCoffee.TabIndex = 4;
+            this.cmbHotCoffee.DropDown += new System.EventHandler(this.cmbHotCoffee_DropDown);
             // 
             // label6
             // 
@@ -266,11 +267,8 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.radTall);
-            this.groupBox3.Controls.Add(this.radGrande);
-            this.groupBox3.Controls.Add(this.rasVenti);
-            this.groupBox3.Controls.Add(this.radSoya);
-            this.groupBox3.Controls.Add(this.radYagsiz);
+            this.groupBox3.Controls.Add(this.grpbx2);
+            this.groupBox3.Controls.Add(this.grpBx1);
             this.groupBox3.Controls.Add(this.chc2x);
             this.groupBox3.Controls.Add(this.chck1x);
             this.groupBox3.Controls.Add(this.label11);
@@ -283,10 +281,32 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Ekstralar";
             // 
+            // grpbx2
+            // 
+            this.grpbx2.Controls.Add(this.radVenti);
+            this.grpbx2.Controls.Add(this.radTall);
+            this.grpbx2.Controls.Add(this.radGrande);
+            this.grpbx2.Location = new System.Drawing.Point(151, 126);
+            this.grpbx2.Name = "grpbx2";
+            this.grpbx2.Size = new System.Drawing.Size(351, 48);
+            this.grpbx2.TabIndex = 4;
+            this.grpbx2.TabStop = false;
+            // 
+            // radVenti
+            // 
+            this.radVenti.AutoSize = true;
+            this.radVenti.Location = new System.Drawing.Point(6, 18);
+            this.radVenti.Name = "radVenti";
+            this.radVenti.Size = new System.Drawing.Size(71, 24);
+            this.radVenti.TabIndex = 2;
+            this.radVenti.TabStop = true;
+            this.radVenti.Text = "Venti";
+            this.radVenti.UseVisualStyleBackColor = true;
+            // 
             // radTall
             // 
             this.radTall.AutoSize = true;
-            this.radTall.Location = new System.Drawing.Point(376, 126);
+            this.radTall.Location = new System.Drawing.Point(213, 18);
             this.radTall.Name = "radTall";
             this.radTall.Size = new System.Drawing.Size(58, 24);
             this.radTall.TabIndex = 2;
@@ -297,7 +317,7 @@
             // radGrande
             // 
             this.radGrande.AutoSize = true;
-            this.radGrande.Location = new System.Drawing.Point(264, 126);
+            this.radGrande.Location = new System.Drawing.Point(103, 18);
             this.radGrande.Name = "radGrande";
             this.radGrande.Size = new System.Drawing.Size(88, 24);
             this.radGrande.TabIndex = 2;
@@ -305,38 +325,37 @@
             this.radGrande.Text = "Grande";
             this.radGrande.UseVisualStyleBackColor = true;
             // 
-            // rasVenti
+            // grpBx1
             // 
-            this.rasVenti.AutoSize = true;
-            this.rasVenti.Location = new System.Drawing.Point(155, 126);
-            this.rasVenti.Name = "rasVenti";
-            this.rasVenti.Size = new System.Drawing.Size(71, 24);
-            this.rasVenti.TabIndex = 2;
-            this.rasVenti.TabStop = true;
-            this.rasVenti.Text = "Venti";
-            this.rasVenti.UseVisualStyleBackColor = true;
-            // 
-            // radSoya
-            // 
-            this.radSoya.AutoSize = true;
-            this.radSoya.Location = new System.Drawing.Point(282, 82);
-            this.radSoya.Name = "radSoya";
-            this.radSoya.Size = new System.Drawing.Size(70, 24);
-            this.radSoya.TabIndex = 2;
-            this.radSoya.TabStop = true;
-            this.radSoya.Text = "Soya";
-            this.radSoya.UseVisualStyleBackColor = true;
+            this.grpBx1.Controls.Add(this.radYagsiz);
+            this.grpBx1.Controls.Add(this.radSoya);
+            this.grpBx1.Location = new System.Drawing.Point(151, 69);
+            this.grpBx1.Name = "grpBx1";
+            this.grpBx1.Size = new System.Drawing.Size(351, 51);
+            this.grpBx1.TabIndex = 3;
+            this.grpBx1.TabStop = false;
             // 
             // radYagsiz
             // 
             this.radYagsiz.AutoSize = true;
-            this.radYagsiz.Location = new System.Drawing.Point(155, 82);
+            this.radYagsiz.Location = new System.Drawing.Point(6, 13);
             this.radYagsiz.Name = "radYagsiz";
             this.radYagsiz.Size = new System.Drawing.Size(82, 24);
             this.radYagsiz.TabIndex = 2;
             this.radYagsiz.TabStop = true;
             this.radYagsiz.Text = "Yağsız";
             this.radYagsiz.UseVisualStyleBackColor = true;
+            // 
+            // radSoya
+            // 
+            this.radSoya.AutoSize = true;
+            this.radSoya.Location = new System.Drawing.Point(103, 13);
+            this.radSoya.Name = "radSoya";
+            this.radSoya.Size = new System.Drawing.Size(70, 24);
+            this.radSoya.TabIndex = 2;
+            this.radSoya.TabStop = true;
+            this.radSoya.Text = "Soya";
+            this.radSoya.UseVisualStyleBackColor = true;
             // 
             // chc2x
             // 
@@ -413,9 +432,12 @@
             // SiparisListBox
             // 
             this.SiparisListBox.FormattingEnabled = true;
+            this.SiparisListBox.HorizontalExtent = 500;
+            this.SiparisListBox.HorizontalScrollbar = true;
             this.SiparisListBox.ItemHeight = 20;
             this.SiparisListBox.Location = new System.Drawing.Point(17, 25);
             this.SiparisListBox.Name = "SiparisListBox";
+            this.SiparisListBox.ScrollAlwaysVisible = true;
             this.SiparisListBox.Size = new System.Drawing.Size(467, 584);
             this.SiparisListBox.TabIndex = 1;
             // 
@@ -437,16 +459,17 @@
             this.buttonSiparisVer.TabIndex = 7;
             this.buttonSiparisVer.Text = "Sipariş Ver";
             this.buttonSiparisVer.UseVisualStyleBackColor = true;
+            this.buttonSiparisVer.Click += new System.EventHandler(this.buttonSiparisVer_Click);
             // 
-            // label12
+            // lblToplam
             // 
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label12.Location = new System.Drawing.Point(618, 775);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(375, 37);
-            this.label12.TabIndex = 0;
-            this.label12.Text = "Toplam Sipariş Tutarı : ";
+            this.lblToplam.AutoSize = true;
+            this.lblToplam.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblToplam.Location = new System.Drawing.Point(618, 775);
+            this.lblToplam.Name = "lblToplam";
+            this.lblToplam.Size = new System.Drawing.Size(375, 37);
+            this.lblToplam.TabIndex = 0;
+            this.lblToplam.Text = "Toplam Sipariş Tutarı : ";
             // 
             // panel1
             // 
@@ -463,7 +486,7 @@
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label8.Location = new System.Drawing.Point(328, 26);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(797, 56);
+            this.label8.Size = new System.Drawing.Size(531, 37);
             this.label8.TabIndex = 0;
             this.label8.Text = "BTI KAHVE EVİ SİPARİŞ EKRANI";
             // 
@@ -477,7 +500,7 @@
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.label12);
+            this.Controls.Add(this.lblToplam);
             this.Name = "BTIKahveEvi";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BTIKahveEvi";
@@ -491,6 +514,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.numHotCoffee)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.grpbx2.ResumeLayout(false);
+            this.grpbx2.PerformLayout();
+            this.grpBx1.ResumeLayout(false);
+            this.grpBx1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -536,12 +563,15 @@
         private System.Windows.Forms.Button buttonHesapla;
         private System.Windows.Forms.RadioButton radTall;
         private System.Windows.Forms.RadioButton radGrande;
-        private System.Windows.Forms.RadioButton rasVenti;
+        private System.Windows.Forms.RadioButton radVenti;
         private System.Windows.Forms.RadioButton radSoya;
         private System.Windows.Forms.RadioButton radYagsiz;
         private System.Windows.Forms.Button buttonSiparisVer;
-        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label lblToplam;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.GroupBox grpbx2;
+        private System.Windows.Forms.GroupBox grpBx1;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }
