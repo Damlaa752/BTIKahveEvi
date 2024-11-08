@@ -138,6 +138,29 @@ namespace BTIKahveEvi
                 }
             }
             #endregion
+            //Listboxa en son ki toplamı yazdırma
+            SiparisListBox.Items.Add("-------------------");
+            //SiparisListBox.Items.Add($"Sipariş Genel Toplam : {toplamFiyat:F2} TL");  
+            SiparisListBox.Items.Add("-------------------");
+            //En son ki toplam tutraı en alttaki labela yazdırdım
+            lblToplam.Text =$"Toplam Tutar : {genelToplam:F2} TL";
+        }
+
+        private void buttonSiparisVer_Click(object sender, EventArgs e)
+        {
+            //Burda dedim ki siparisAdedini sipariş listesi içindeki index kadar yaz
+            int siparisAdedi = siparisListesi.Count;
+            //int siparisAdedi = siparisAdedi + siparisListesi.Count;
+            //int siparisAdedi = siparisListesi.Sum(siparis => siparis.SiparisAdedi);
+            double toplamTutar = siparisListesi.Sum(s => s.ToplamTutar);
+
+            SiparisEkrani form2 = new SiparisEkrani(siparisAdedi, toplamTutar);
+            form2.Show();
+        }
+
+        private void cmbHotCoffee_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
         }
 
     }
