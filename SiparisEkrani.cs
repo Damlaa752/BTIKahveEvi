@@ -16,8 +16,8 @@ namespace BTIKahveEvi
         public SiparisEkrani(int siparisAdedi, double toplamTutar)
         {
             InitializeComponent();
-            lblToplamSiparis.Text=$"Sipariş Adedi : {siparisAdedi}";
-            lblToplamTutar.Text=$"Toplam Tutar :  {toplamTutar:F2} TL";
+            lblToplamSiparis.Text=$"Toplam {siparisAdedi} Adedi Siparişiniz var ";
+            lblToplamTutar.Text=$"{toplamTutar:F2} TL Tutarındadır.";
 
         }     
 

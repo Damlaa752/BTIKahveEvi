@@ -182,6 +182,7 @@
             this.buttonHesapla.TabIndex = 7;
             this.buttonHesapla.Text = "Hesapla";
             this.buttonHesapla.UseVisualStyleBackColor = true;
+            this.buttonHesapla.Click += new System.EventHandler(this.buttonHesapla_Click);
             // 
             // numericUpDown3
             // 
@@ -220,6 +221,7 @@
             this.cmbHotDrink.Name = "cmbHotDrink";
             this.cmbHotDrink.Size = new System.Drawing.Size(217, 28);
             this.cmbHotDrink.TabIndex = 4;
+            this.cmbHotDrink.SelectedIndexChanged += new System.EventHandler(this.cmbHotDrink_SelectedIndexChanged);
             // 
             // cmbFrezeeDrink
             // 
@@ -228,6 +230,7 @@
             this.cmbFrezeeDrink.Name = "cmbFrezeeDrink";
             this.cmbFrezeeDrink.Size = new System.Drawing.Size(217, 28);
             this.cmbFrezeeDrink.TabIndex = 4;
+            this.cmbFrezeeDrink.SelectedIndexChanged += new System.EventHandler(this.cmbFrezeeDrink_SelectedIndexChanged);
             // 
             // cmbHotCoffee
             // 
@@ -236,7 +239,7 @@
             this.cmbHotCoffee.Name = "cmbHotCoffee";
             this.cmbHotCoffee.Size = new System.Drawing.Size(217, 28);
             this.cmbHotCoffee.TabIndex = 4;
-            this.cmbHotCoffee.DropDown += new System.EventHandler(this.cmbHotCoffee_DropDown);
+            this.cmbHotCoffee.SelectedIndexChanged += new System.EventHandler(this.cmbHotCoffee_SelectedIndexChanged);
             // 
             // label6
             // 

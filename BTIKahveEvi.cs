@@ -16,6 +16,9 @@ namespace BTIKahveEvi
 {
     public partial class BTIKahveEvi : Form
     {
+        public static int SiparisSayisi { get; set; }
+        public static int SiparisToplam = 0;
+
         #region Diziler      
         public static string[][] icecekAdlari = new string[][]
         {
@@ -56,7 +59,7 @@ namespace BTIKahveEvi
             public double UrunBirimFiyati { get; set; }
             public double BoyutKatSayisi { get; set; }
             public double EkstraFiyat { get; set; }
-            public static int SiparisAdedi { get; private set; }
+            //public double SiparisTutari { get; set; }
             public double ToplamTutar => (Adet * UrunBirimFiyati * BoyutKatSayisi) + (Adet * EkstraFiyat);
 
             public override string ToString()
@@ -66,7 +69,6 @@ namespace BTIKahveEvi
         }
 
         #endregion
-
 
         #region HesaplaVeEkleClaası
 
@@ -78,8 +80,8 @@ namespace BTIKahveEvi
             foreach (Control item in cntrl)
             {
                 item.Enabled=false;
-            }       
-              
+            }
+
             if (icecekAdlari == null)
             {
                 Console.WriteLine("booşş Diziiiiii");
@@ -100,6 +102,7 @@ namespace BTIKahveEvi
         #endregion
         //Diğer formda da bunu yazdırıcağım için mecburen sınıfın üzerinde tanımladım
         List<Siparisler> siparisListesi = new List<Siparisler>();
+
         private void buttonHesapla_Click(object sender, EventArgs e)
         {
             #region Textboxlar Üst GruopBox
@@ -110,21 +113,20 @@ namespace BTIKahveEvi
             double genelToplam = 0;
             double toplamFiyat = 0;
 
+            bool BosAlanVarMi = false;
             foreach (TextBox txt in textBoxes)
             {
                 if (txt.Text != "")
-                {
                     SiparisListBox.Items.Add(txt.Text);
-                }
                 else
-                {
-                    MessageBox.Show("Lütfen sizin için ayırılan alanları boş geçmeyiniz.!");
-                }
+                    BosAlanVarMi=true;
             }
+            if (BosAlanVarMi)
+                MessageBox.Show("Lütfen sizin için ayırılan alanları boş geçmeyiniz.!");
+
             #endregion
 
             #region Comboboxlar ve NumericUpDownlar Ekstra Ürünler
-            //SiparisListBox.Items.Clear();
             for (int i = 0; i < combobox.Length; i++)
             {
                 if (combobox[i].SelectedItem != null && num[i].Value > 0)
@@ -135,6 +137,7 @@ namespace BTIKahveEvi
                     bool urunBulundu = false;
                     double boyutKatsayisi = 1;
                     double ekstraFiyat = 0.5;
+                    int siparisAdediHesapla = 0;
 
                     //fiyatlarla isimleri matchiyoruz aslına bakarsan 
                     for (int j = 0; j < icecekAdlari.Length && !urunBulundu; j++)
@@ -146,31 +149,9 @@ namespace BTIKahveEvi
                             urunBulundu = true;
                         }
                     }
-
-                    //Control olayında iki farklı diziyi tek bir dizi yapamazsın sadece farklı türdeki tooları bir diziye alabilirsin o kadar.               
-                    //Control[] cntrl = { chck1x, chc2x, radSoya, radYagsiz, radTall, radGrande, radVenti };
-
-                  
-                    //if (cmbHotCoffee.SelectedItem != null && numHotCoffee.Value>0)
-                    //{
-                    //    foreach (Control item in cntrl)
-                    //    {
-                    //        item.Enabled=true;
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    foreach (Control item in cntrl)
-                    //    {
-                    //        item.Enabled = false;
-                    //    }
-                    //}
-
-
-                    //seçilen ürün kahve ise alttaki zımbırtıları seçsin yoksa seçmesin 
+                    //seçilen ürün kahve ise alttaki zımbırtıları koşullara göre seçsin
                     if (icecekAdlari[0].Contains(secilenUrun))
                     {
-
                         #region RadioButton seçimlerine göre kahve boyutu kat sayısı artışı (tall-grande-venti)
                         //kat sayı çarpımı olcak çünkü küsüratlı olduğundan double dedim
                         if (radGrande.Checked)
@@ -189,8 +170,7 @@ namespace BTIKahveEvi
                         else if (chc2x.Checked)
                             ekstraFiyat=0.75 * adet;
 
-                        //toplamFiyat = (urunFiyati * adet * boyutKatsayisi) + ekstraFiyat;
-                        toplamFiyat += ekstraFiyat;
+                        toplamFiyat += ekstraFiyat; 
                         #endregion
 
                         #region RadioButton Süt seçimlerine göre ekstra fiyat artışı (soya ve yagsiz)
@@ -202,10 +182,7 @@ namespace BTIKahveEvi
                         toplamFiyat += ekstraFiyat;
                         #endregion
                     }
-                   
-
-                    //if (cmbHotCoffee.SelectedItem != null && )
-
+                    //girilen değeri diğer sayfaya yollamak için classla matchliyoruz
                     Siparisler siparis = new Siparisler
                     {
                         UrunAdi = secilenUrun,
@@ -213,7 +190,6 @@ namespace BTIKahveEvi
                         UrunBirimFiyati = urunFiyati,
                         BoyutKatSayisi = boyutKatsayisi,
                         EkstraFiyat=(cmbHotCoffee.SelectedIndex == 0) ? 0.5 : 0,
-
                     };
 
                     //sipariş listeye ekleme
@@ -221,6 +197,7 @@ namespace BTIKahveEvi
 
                     //listboxa yazdırma
                     SiparisListBox.Items.Add(siparis.ToString());
+
                 }
 
                 //genel toplama ekleme işlemi
@@ -231,157 +208,152 @@ namespace BTIKahveEvi
                     MessageBox.Show("Adet bilgilerini kontrol edin, girilmemiş değer var");
                 }
             }
-
-
+            // siparisToplam++;
             #endregion
             //Listboxa en son ki toplamı yazdırma
             SiparisListBox.Items.Add("-------------------");
-            //SiparisListBox.Items.Add($"Sipariş Genel Toplam : {toplamFiyat:F2} TL");  
             SiparisListBox.Items.Add("-------------------");
             //En son ki toplam tutraı en alttaki labela yazdırdım
             lblToplam.Text =$"Toplam Tutar : {genelToplam:F2} TL";
+            SiparisSayisi = SiparisToplam++;
         }
 
         private void buttonSiparisVer_Click(object sender, EventArgs e)
         {
             //Burda dedim ki siparisAdedini sipariş listesi içindeki index kadar yaz
-            int siparisAdedi = siparisListesi.Count;
-            //int siparisAdedi = siparisAdedi + siparisListesi.Count;
-            //int siparisAdedi = siparisListesi.Sum(siparis => siparis.SiparisAdedi);
+
             double toplamTutar = siparisListesi.Sum(s => s.ToplamTutar);
 
-            SiparisEkrani form2 = new SiparisEkrani(siparisAdedi, toplamTutar);
+            SiparisEkrani form2 = new SiparisEkrani(SiparisSayisi, toplamTutar);
             form2.Show();
         }
 
         private void cmbHotCoffee_SelectedIndexChanged(object sender, EventArgs e)
         {
             Control[] cntrl = { chck1x, chc2x, radSoya, radYagsiz, radTall, radGrande, radVenti };
-            if (cmbHotCoffee.SelectedIndex == null )
-            {
-                foreach (var control in cntrl)
-                {
-                    control.Enabled = false;
-                }
-            }
-            else
-            {
-                // Eğer seçili bir öğe yoksa, bu kontrolleri devre dışı bırak
-                foreach (var control in cntrl)
-                {
-                    control.Enabled = true;
-                }
-            }
-
-            //chck1x.Enabled=true;
-            //chc2x.Enabled=true;
-            //radSoya.Enabled=true;
-            //radYagsiz.Enabled=true;
-            //radTall.Enabled=true;
-            //radGrande.Enabled=true;
-            //radVenti.Enabled=true;
-
-            ////Control olayında iki farklı diziyi tek bir dizi yapamazsın sadece farklı türdeki tooları bir diziye alabilirsin o kadar.               
-            //Control[] cntrl = { chck1x, chc2x, radSoya, radYagsiz, radTall, radGrande, radVenti };
-            //foreach (Control item in cntrl)
-            //{     
-            //    if (cmbHotCoffee.SelectedIndex < -1)
-            //    {
-            //        item.Enabled=true;                  
-            //    }
-            //    else if((cmbHotCoffee.SelectedIndex != null || cmbFrezeeDrink.SelectedIndex !=null) && (cmbFrezeeDrink.SelectedIndex !=null || cmbHotCoffee.SelectedIndex != null))
-            //    {
-            //        item.Enabled=true;          
-            //    }
-            //    else if ((cmbHotCoffee.SelectedIndex != null || cmbHotDrink.SelectedIndex !=null) && (cmbHotDrink.SelectedIndex !=null || cmbHotCoffee.SelectedIndex != null))
-            //    {
-            //        item.Enabled=true;
-            //    }
-            //    else if((cmbFrezeeDrink.SelectedIndex != null || cmbHotCoffee.SelectedIndex != null) && (cmbHotCoffee.SelectedIndex != null || cmbFrezeeDrink.SelectedIndex != null))
-            //    {
-            //        item.Enabled=false;
-            //    }
-            //}    
-        }
-
-        private void cmbHotCoffee_DropDown(object sender, EventArgs e)
-        {
-            Control[] cntrl = { chck1x, chc2x, radSoya, radYagsiz, radTall, radGrande, radVenti };
             if (cmbHotCoffee.SelectedIndex == null)
             {
                 foreach (var control in cntrl)
                 {
-                    control.Enabled = false;
+                    control.Enabled =false;
+                }
+            }
+            else if ((cmbHotCoffee.SelectedIndex != null && cmbFrezeeDrink.SelectedIndex != null) || (cmbFrezeeDrink.SelectedIndex != null && cmbHotCoffee.SelectedIndex == null))
+            {
+                foreach (var control in cntrl)
+                {
+                    control.Enabled =true;
+                }
+            }
+            else if ((cmbHotCoffee.SelectedIndex != null && cmbHotDrink.SelectedIndex != null) || (cmbHotDrink.SelectedIndex!= null && cmbHotCoffee.SelectedIndex==null))
+            {
+                foreach (var control in cntrl)
+                {
+                    control.Enabled =true;
+                }
+            }
+
+            else if ((cmbHotDrink.SelectedIndex != null && cmbFrezeeDrink != null) || (cmbFrezeeDrink != null && cmbHotDrink.SelectedIndex != null))
+            {
+                foreach (var control in cntrl)
+                {
+                    control.Enabled=false;
                 }
             }
             else
             {
-                // Eğer seçili bir öğe yoksa, bu kontrolleri devre dışı bırak
                 foreach (var control in cntrl)
                 {
                     control.Enabled = true;
                 }
             }
         }
-
-
-
-        //private void cmbFrezeeDrink_SelectedIndexChanged(object sender, EventArgs e)
-        //{           
-        //    //Control olayında iki farklı diziyi tek bir dizi yapamazsın sadece farklı türdeki tooları bir diziye alabilirsin o kadar.               
-        //    Control[] cntrl = { chck1x, chc2x, radSoya, radYagsiz, radTall, radGrande, radVenti };
-        //    foreach (Control item in cntrl)
-        //    {
-
-        //        if (cmbFrezeeDrink.SelectedIndex != null)
-        //        {
-        //            item.Enabled=false;
-
-        //        }
-        //        else if (cmbFrezeeDrink.SelectedIndex != null || cmbHotCoffee.SelectedIndex ==null)
-        //        {
-        //            item.Enabled=true;
-        //        }
-        //        else if (cmbHotDrink.SelectedIndex !=null || cmbHotCoffee.SelectedIndex ==null)
-        //        {
-        //            item.Enabled=true;
-        //        }
-        //        else if(cmbFrezeeDrink.SelectedIndex !=null || cmbHotDrink.SelectedIndex == null)
-        //        {
-        //            item.Enabled=false;
-        //        }
-        //        else
-        //        {
-        //            item.Enabled = true;
-        //        }
-        //    }
-        //}
-
-        //private void cmbHotDrink_SelectedIndexChanged(object sender, EventArgs e)
-        //{     
-        //    //Control olayında iki farklı diziyi tek bir dizi yapamazsın sadece farklı türdeki tooları bir diziye alabilirsin o kadar.               
-        //    Control[] cntrl = { chck1x, chc2x, radSoya, radYagsiz, radTall, radGrande, radVenti };
-        //    foreach (Control item in cntrl)
-        //    {
-
-        //        if (cmbHotDrink.SelectedIndex != null)
-        //        {
-        //            item.Enabled=false;
-
-        //        }
-        //        else if((cmbHotDrink.SelectedIndex != null || cmbHotCoffee.SelectedIndex != null) && (cmbHotCoffee.SelectedIndex != null || cmbHotDrink.SelectedIndex != null))
-        //        {
-        //            item.Enabled=true;
-        //        }
-        //        else if ((cmbHotDrink.SelectedIndex != null || cmbFrezeeDrink.SelectedIndex != null) && (cmbFrezeeDrink.SelectedIndex != null || cmbHotDrink.SelectedIndex != null))
-        //        {
-        //            item.Enabled=true;
-        //        }
-        //        else if ((cmbHotCoffee.SelectedIndex !=null || cmbFrezeeDrink.SelectedIndex != null) && (cmbFrezeeDrink.SelectedIndex != null || cmbHotCoffee.SelectedIndex !=null))
-        //        {
-
-        //        }
-        //    }
-        //}
+        private void cmbFrezeeDrink_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Control olayında iki farklı diziyi tek bir dizi yapamazsın sadece farklı türdeki tooları bir diziye alabilirsin o kadar. 
+            Control[] cntrl = { chck1x, chc2x, radSoya, radYagsiz, radTall, radGrande, radVenti };
+            if (cmbFrezeeDrink.SelectedIndex == null)
+            {
+                foreach (Control item in cntrl)
+                {
+                    item.Enabled=false;
+                }
+            }
+            else if (cmbFrezeeDrink.SelectedIndex == null && cmbHotCoffee.SelectedIndex !=null)
+            {
+                foreach (Control item in cntrl)
+                {
+                    item.Enabled=true;
+                }
+            }
+            else if (cmbHotCoffee.SelectedIndex ==null && cmbFrezeeDrink.SelectedIndex != null)
+            {
+                foreach (Control item in cntrl)
+                {
+                    item.Enabled=false;
+                }
+            }         
+            else if (cmbFrezeeDrink.SelectedIndex != null && cmbHotCoffee.SelectedIndex == null)
+            {
+                foreach (Control item in cntrl)
+                {
+                    item.Enabled=false;
+                }
+            }   
+            else if (cmbHotCoffee.SelectedIndex != null && cmbHotDrink.SelectedIndex !=null)
+            {
+                foreach (Control item in cntrl)
+                {
+                    item.Enabled=true;
+                }
+            }
+            else
+            {
+                foreach (var control in cntrl)
+                {
+                    control.Enabled = false;
+                }
+            }
+        }
+        private void cmbHotDrink_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Control olayında iki farklı diziyi tek bir dizi yapamazsın sadece farklı türdeki tooları bir diziye alabilirsin o kadar.               
+            Control[] cntrl = { chck1x, chc2x, radSoya, radYagsiz, radTall, radGrande, radVenti };
+            if (cmbHotDrink.SelectedIndex == null)
+            {
+                foreach (Control item in cntrl)
+                {
+                    item.Enabled=false;
+                }
+            }
+            else if ((cmbHotDrink.SelectedIndex != null && cmbHotCoffee.SelectedIndex ==null) || (cmbHotCoffee.SelectedIndex == null && cmbHotDrink.SelectedIndex != null))
+            {
+                foreach (Control item in cntrl)
+                {
+                    item.Enabled=false;
+                }
+            }
+            else if ((cmbHotDrink.SelectedIndex == null && cmbHotCoffee.SelectedIndex !=null) || (cmbHotCoffee.SelectedIndex !=null && cmbHotDrink.SelectedIndex == null))
+            {
+                foreach (Control item in cntrl)
+                {
+                    item.Enabled=true;
+                }
+            }     
+            else if (cmbHotCoffee.SelectedIndex != null && cmbFrezeeDrink.SelectedIndex != null)
+            {
+                foreach (Control item in cntrl)
+                {
+                    item.Enabled=true;
+                }
+            }        
+            else
+            {
+                foreach (var control in cntrl)
+                {
+                    control.Enabled = false;
+                }
+            }
+        }
     }
 }

@@ -57,7 +57,7 @@
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(99, 50);
             this.btnOk.TabIndex = 1;
-            this.btnOk.Text = "button1";
+            this.btnOk.Text = "Ok";
             this.btnOk.UseVisualStyleBackColor = true;
             // 
             // SiparisEkrani
