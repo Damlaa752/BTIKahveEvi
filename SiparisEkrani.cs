@@ -23,7 +23,12 @@ namespace BTIKahveEvi
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            this.Close();
+            
+        }
+
+        private void btnOk_Click_1(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

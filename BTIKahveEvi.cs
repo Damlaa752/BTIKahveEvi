@@ -114,13 +114,13 @@ namespace BTIKahveEvi
             double toplamFiyat = 0;
 
             bool BosAlanVarMi = false;
-            foreach (TextBox txt in textBoxes)
-            {
-                if (txt.Text != "")
-                    SiparisListBox.Items.Add(txt.Text);
-                else
-                    BosAlanVarMi=true;
-            }
+            //foreach (TextBox txt in textBoxes)
+            //{
+            //    if (txt.Text != "")
+            //        SiparisListBox.Items.Add(txt.Text);
+            //    else
+            //        BosAlanVarMi=true;
+            //}
             if (BosAlanVarMi)
                 MessageBox.Show("Lütfen sizin için ayırılan alanları boş geçmeyiniz.!");
 
@@ -137,7 +137,7 @@ namespace BTIKahveEvi
                     bool urunBulundu = false;
                     double boyutKatsayisi = 1;
                     double ekstraFiyat = 0.5;
-                    int siparisAdediHesapla = 0;
+                    //int siparisAdediHesapla = 0;
 
                     //fiyatlarla isimleri matchiyoruz aslına bakarsan 
                     for (int j = 0; j < icecekAdlari.Length && !urunBulundu; j++)
@@ -211,11 +211,12 @@ namespace BTIKahveEvi
             // siparisToplam++;
             #endregion
             //Listboxa en son ki toplamı yazdırma
-            SiparisListBox.Items.Add("-------------------");
-            SiparisListBox.Items.Add("-------------------");
+            //SiparisListBox.Items.Add("-------------------");
+            //SiparisListBox.Items.Add("-------------------");
             //En son ki toplam tutraı en alttaki labela yazdırdım
+            
             lblToplam.Text =$"Toplam Tutar : {genelToplam:F2} TL";
-            SiparisSayisi = SiparisToplam++;
+            SiparisSayisi = SiparisListBox.Items.Count;
         }
 
         private void buttonSiparisVer_Click(object sender, EventArgs e)
